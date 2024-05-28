@@ -18,8 +18,6 @@ class TicTacToeCircle:
 
 
 # Ejemplo de uso
-x=int(input("ingresa cordenada x: "))
-y=int(input("ingresa coordenada y: "))
 circle = TicTacToeCircle(300)
-circle.draw_circle(x, y)
+
 circle.display()

@@ -3,14 +3,14 @@ import turtle
 class TicTacToeBoard:
     def __init__(self, size):
         self.size = size
-        self.speed=(1009990)
+        self.speed=(10)
         self.turtle = turtle.Turtle()
 
     def draw_board(self):
         self.turtle.penup()
         self.turtle.goto(-self.size // 2, self.size // 6)
         self.turtle.pendown()
-        self.speed=(1009999)
+        self.speed=(10)
         self.turtle.forward(self.size)
         
         self.turtle.penup()
@@ -38,23 +38,6 @@ class TicTacToeBoard:
         self.speed=(100)
         screen.mainloop()
 
-# class circulo:
-#     def dibujarCirculo(self, x, y):
-#         if tortuga is None:
-#             self.t = turtle.Turtle()
-#         else:
-#             self.t = tortuga
-    
-#         self.turtle.penup()
-#         self.turtle.goto(self.size // 2, self.size // 6)
-#         self.turtle.pendown()
-#         self.turtle.circle(self.size // 2)
 
-        
-
-
-
-
-# circle = circulo()
 board = TicTacToeBoard(800)
 board.display()

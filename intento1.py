@@ -2,7 +2,7 @@ import turtle
 
 turtle.bgcolor('black')
 t=turtle.Turtle()
-t.speed(10)
+t.speed(1000)
 colors = ['red','dark red']
 for number in range (400):
     t.forward(number+1)
