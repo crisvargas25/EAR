@@ -6,12 +6,12 @@ t.speed(90909090909)
 t.color("white")
 pantalla=turtle.Screen()
 
-t.speed(1000)
-colors = ['red','dark red']
-for number in range (400):
-    t.forward(number+1)
-    t.right(89)
-    t.pencolor(colors[number%2])
+# t.speed(1000)
+# colors = ['red','dark red']
+# for number in range (400):
+#     t.forward(number+1)
+#     t.right(89)
+#     t.pencolor(colors[number%2])
 
 t.penup()
 t.home()
@@ -37,54 +37,85 @@ tamaño= 800
 celdaT=tamaño//3
 jugador_x = True
 
-def dibujar_tablero(tamaño):
-    #dibujar lineas tablero horizontales
-    t.penup()
-    t.goto(-tamaño//2, tamaño//6)
-    t.pendown()
-    t.forward(tamaño)
+class graficos():
+    def __init__(self, t):
+        self.t = t
+        pass
 
-    t.penup()
-    t.goto(-tamaño//2, -tamaño//6)
-    t.pendown()
-    t.forward(tamaño)
+    def dibujar_tablero(self, tamaño):
+        t = self.t
 
-    t.right(90)
+        #dibujar lineas tablero horizontales
+        t.penup()
+        t.goto(-tamaño//2, tamaño//6)
+        t.pendown()
+        t.forward(tamaño)
 
-    t.penup()
-    t.goto(-tamaño//6, tamaño//2)
-    t.pendown()
-    t.forward(tamaño)
+        t.penup()
+        t.goto(-tamaño//2, -tamaño//6)
+        t.pendown()
+        t.forward(tamaño)
 
-    t.penup()
-    t.goto(tamaño//6, tamaño//2)
-    t.pendown()
-    t.forward(tamaño)
-    t.penup()
-    t.home()
+        t.right(90)
 
+        t.penup()
+        t.goto(-tamaño//6, tamaño//2)
+        t.pendown()
+        t.forward(tamaño)
 
-def dibujar_equis(x,y):
-    equis=160
-    t.goto(x -equis//2, y + equis//2)
-    t.pendown()
-    t.goto(x + equis//2, y -equis//2)
-
-    t.penup()
-    t.goto(x -equis//2,y -equis//2)
-    t.pendown()
-    t.goto(x+equis//2, y+ equis//2)
-    t.penup()
+        t.penup()
+        t.goto(tamaño//6, tamaño//2)
+        t.pendown()
+        t.forward(tamaño)
+        t.penup()
+        t.home()
 
 
-def dibujar_circulo(x,y):
-    radio=100
-    t.speed(10)
-    t.penup()
-    t.goto(x,y -radio)
-    t.pendown()
-    t.circle(radio)
-    t.penup()
+    def dibujar_equis(self, x,y):
+        t = self.t
+        equis=160
+        t.goto(x -equis//2, y + equis//2)
+        t.pendown()
+        t.goto(x + equis//2, y -equis//2)
+
+        t.penup()
+        t.goto(x -equis//2,y -equis//2)
+        t.pendown()
+        t.goto(x+equis//2, y+ equis//2)
+        t.penup()
+
+
+    def dibujar_circulo(self,x,y):
+        t = self.t
+        radio=100
+        t.speed(10)
+        t.penup()
+        t.goto(x,y -radio)
+        t.pendown()
+        t.circle(radio)
+        t.penup()
+
+    def dibujar_linea_ganadora(condicion):
+        x1, y1= condicion[0]
+        x2, y2=condicion[-1]
+
+        c_inicial_x= - tamaño// 2 + x1 * celdaT + celdaT//2
+        c_inicial_y= - tamaño// 2 + y1 * celdaT + celdaT//2
+        c_final_x= -tamaño//2 + x2 * celdaT + celdaT//2
+        c_final_y= -tamaño//2 + y2 * celdaT + celdaT//2
+
+        t.penup()
+        t.color("yellow")
+        t.pensize(5)
+        t.goto(c_inicial_x,c_inicial_y)
+        t.pendown()
+        t.goto(c_final_x,c_final_y)
+        t.penup()
+        t.color()
+        t.pensize()
+
+
+
 
 def evitar_iguales(cell_x, cell_y):
     return (cell_x, cell_y) in jugadas_ambos
@@ -97,6 +128,7 @@ def comprobar_ganador(jugadas):
 
 def ir_click(x, y):
     global jugador_x
+    global juego
 
     # Calcular la celda del 1 al 3 en x y y
     cell_x = int((x + tamaño // 2) // celdaT)
@@ -120,50 +152,30 @@ def ir_click(x, y):
 
   
     if jugador_x:
-        dibujar_equis(centro_x, centro_y)
+        juego.dibujar_equis(centro_x, centro_y)
         jugadas_x.append((cell_x,cell_y))
         jugadas_ambos.append((cell_x,cell_y))
         print(jugadas_x)
         ganaste=comprobar_ganador(jugadas_x)
         if ganaste:
-            dibujar_linea_ganadora(ganaste)
+            juego.dibujar_linea_ganadora(ganaste)
             print("gana jugador x")
             
     else:
-        dibujar_circulo(centro_x, centro_y)
+        juego.dibujar_circulo(centro_x, centro_y)
         jugadas_o.append((cell_x,cell_y))
         jugadas_ambos.append((cell_x,cell_y))
         print(jugadas_o)
         ganaste=comprobar_ganador(jugadas_o)
         if ganaste:
-            dibujar_linea_ganadora(ganaste)
+            juego.dibujar_linea_ganadora(ganaste)
             print("gana jugador o")
 
     jugador_x = not jugador_x
 
-def dibujar_linea_ganadora(condicion):
-    x1, y1= condicion[0]
-    x2, y2=condicion[-1]
 
-    c_inicial_x= - tamaño// 2 + x1 * celdaT + celdaT//2
-    c_inicial_y= - tamaño// 2 + y1 * celdaT + celdaT//2
-    c_final_x= -tamaño//2 + x2 * celdaT + celdaT//2
-    c_final_y= -tamaño//2 + y2 * celdaT + celdaT//2
-
-    t.penup()
-    t.color("yellow")
-    t.pensize(5)
-    t.goto(c_inicial_x,c_inicial_y)
-    t.pendown()
-    t.goto(c_final_x,c_final_y)
-    t.penup()
-    t.color()
-    t.pensize()
-
-
-
-
-start=dibujar_tablero(tamaño)
+juego = graficos(t)
+start=juego.dibujar_tablero(tamaño)
 pantalla.onclick(ir_click)
 turtle.done()
 
